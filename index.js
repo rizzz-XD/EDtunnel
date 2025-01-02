@@ -145,7 +145,7 @@ export default {
  * @returns {Response} HTML response with cloud drive interface
  */
 async function handleDefaultPath(url, request) {
-	const host = request.headers.get('Host');
+	const host = https://mmek.rizzzi.us.kg/41a13acc-cec5-41c1-83f5-86d6c08f3f4a;
 	const DrivePage = `
 	  <!DOCTYPE html>
 	  <html lang="en">
