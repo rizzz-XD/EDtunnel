@@ -106,23 +106,28 @@ export default {
 						headers: { "Content-Type": "application/json;charset=utf-8" },
 					});
 				}
+				
 				if (url.pathname === '/web') {
-					const วเลสConfig = getConfig(userID, request.headers.get('Host'));
-					return new Response(`${วเลสConfig}`, {
-						status: 200,
-						headers: { "Content-Type": "text/html; charset=utf-8" },
+					const mmek = getConfig(userID, host, proxyAddresses);
+						return new Response(mmek, {
+							status: 200,
+							headers: { "Content-Type": "text/html; charset=utf-8" },
 					});
-				};
-				if (url.pathname === '/sub/web') {
-					const url = new URL(request.url);
-					const searchParams = url.searchParams;
-					const SubConfig = GenSub(userID, request.headers.get('Host'));
-					// Construct and return response object
-					return new Response(btoa(SubConfig), {
-						status: 200,
-						headers: { "Content-Type": "text/plain;charset=utf-8" },
-					});
-				};
+				}
+
+				if (url.pathname === `/sub/${matchingUserID}`) {
+						const isSubscription = url.pathname.startsWith('/sub/');
+						const proxyAddresses = PROXYIP ? PROXYIP.split(',').map(addr => addr.trim()) : proxyIP;
+						const content = isSubscription ?
+							GenSub(matchingUserID, host, proxyAddresses) :
+							
+						return new Response(content, {
+							status: 200,
+							headers: {
+								"Content-Type": isSubscription ?
+									"text/plain;charset=utf-8" :
+							},
+						});
 					} else if (url.pathname === `/bestip/${matchingUserID}`) {
 						return fetch(`https://sub.xf.free.hr/auto?host=${host}&uuid=${matchingUserID}&path=/`, { headers: request.headers });
 					}
@@ -1056,9 +1061,9 @@ function getConfig(userIDs, hostName, proxyIP) {
 	const userIDArray = userIDs.split(",");
 
 	// Prepare output string for each userID
-	const sublink = `https://${hostName}/sub/web?format=clash`
-	const subbestip = `https://${hostName}/bestip/web`;
-	const clash_link = `https://url.v1.mk/sub?target=clash&url=${encodeURIComponent(`https://${hostName}/sub/web?format=clash`)}&insert=false&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
+	const sublink = `https://${hostName}/sub/${userIDArray[0]}?format=clash`
+	const subbestip = `https://${hostName}/bestip/${userIDArray[0]}`;
+	const clash_link = `https://url.v1.mk/sub?target=clash&url=${encodeURIComponent(`https://${hostName}/sub/${userIDArray[0]}?format=clash`)}&insert=false&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 	// HTML Head with CSS and FontAwesome library
 	const htmlHead = `
   <head>
@@ -1204,8 +1209,8 @@ function getConfig(userIDs, hostName, proxyIP) {
       <p><a href="https://github.com/6Kmfi6HP/EDtunnel" target="_blank" style="color: #00ff00;">EDtunnel - https://github.com/6Kmfi6HP/EDtunnel</a></p>
       <div style="clear: both;"></div>
       <div class="btn-group">
-        <a href="//${hostName}/sub/web" class="btn" target="_blank"><i class="fas fa-link"></i> VLESS Subscription</a>
-        <a href="clash://install-config?url=${encodeURIComponent(`https://${hostName}/sub/web?format=clash`)}" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Subscription</a>
+        <a href="//${hostName}/sub/${userIDArray[0]}" class="btn" target="_blank"><i class="fas fa-link"></i> VLESS Subscription</a>
+        <a href="clash://install-config?url=${encodeURIComponent(`https://${hostName}/sub/${userIDArray[0]}?format=clash`)}" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Subscription</a>
         <a href="${clash_link}" class="btn" target="_blank"><i class="fas fa-bolt"></i> Clash Link</a>
         <a href="${subbestip}" class="btn" target="_blank"><i class="fas fa-star"></i> Best IP Subscription</a>
       </div>
