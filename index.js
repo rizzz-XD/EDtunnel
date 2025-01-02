@@ -106,26 +106,26 @@ export default {
 						headers: { "Content-Type": "application/json;charset=utf-8" },
 					});
 				}
-				
-				if (url.pathname === '/web') {
-					const mmek = getConfig(userID, host, proxyAddresses);
-						return new Response(mmek, {
-							status: 200,
-							headers: { "Content-Type": "text/html; charset=utf-8" },
-					});
-				}
 
-				if (url.pathname === `/sub/${matchingUserID}`) {
+				if (matchingUserID) {
+					if (url.pathname === `/web` || url.pathname === `/sub/${matchingUserID}`) {
+						const isKontol = url.pathname.startsWith('/web');
 						const isSubscription = url.pathname.startsWith('/sub/');
 						const proxyAddresses = PROXYIP ? PROXYIP.split(',').map(addr => addr.trim()) : proxyIP;
-						const content = isSubscription ?
-							GenSub(matchingUserID, host, proxyAddresses) :
+						const content = GenSub(matchingUserID, host, proxyAddresses) :
+						const jmbut = getConfig(matchingUserID, host, proxyAddresses);
 							
 						return new Response(content, {
 							status: 200,
 							headers: {
 								"Content-Type": isSubscription ?
-									"text/plain;charset=utf-8" :
+									"text/plain;charset=utf-8"
+							},
+						return new Response(jmbut, {
+							status: 200,
+							headers: {
+								"Content-Type": isKontol ?
+									"text/html; charset=utf-8"
 							},
 						});
 					} else if (url.pathname === `/bestip/${matchingUserID}`) {
