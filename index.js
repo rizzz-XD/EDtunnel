@@ -108,23 +108,18 @@ export default {
 				}
 
 				if (matchingUserID) {
-					if (url.pathname === `/web` || url.pathname === `/sub/${matchingUserID}`) {
-						const isKontol = url.pathname.startsWith('/web');
+					if (url.pathname === `/${matchingUserID}` || url.pathname === `/sub/${matchingUserID}`) {
 						const isSubscription = url.pathname.startsWith('/sub/');
 						const proxyAddresses = PROXYIP ? PROXYIP.split(',').map(addr => addr.trim()) : proxyIP;
-						const content = GenSub(matchingUserID, host, proxyAddresses) :
-						const jmbut = getConfig(matchingUserID, host, proxyAddresses);
+						const content = isSubscription ?
+							GenSub(matchingUserID, host, proxyAddresses) :
+							getConfig(matchingUserID, host, proxyAddresses);
 							
 						return new Response(content, {
 							status: 200,
 							headers: {
 								"Content-Type": isSubscription ?
-									"text/plain;charset=utf-8"
-							},
-						return new Response(jmbut, {
-							status: 200,
-							headers: {
-								"Content-Type": isKontol ?
+									"text/plain;charset=utf-8" :
 									"text/html; charset=utf-8"
 							},
 						});
