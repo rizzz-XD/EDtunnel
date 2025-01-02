@@ -91,11 +91,11 @@ export default {
 			const host = request.headers.get('Host');
 			const requestedPath = url.pathname.substring(1); // Remove leading slash
 			const matchingUserID = userIDs.length === 1 ?
-				(requestedPath === userIDs[0] || 
-				 requestedPath === `sub/${userIDs[0]}` || 
-				 requestedPath === `bestip/${userIDs[0]}` ? userIDs[0] : null) :
+				(requestedPath === `geo` || 
+				 requestedPath === `sub/geo` || 
+				 requestedPath === `bestip/geo` ? userIDs[0] : null) :
 				userIDs.find(id => {
-					const patterns = [id, `sub/${id}`, `bestip/${id}`];
+					const patterns = [id, `sub/geo`, `bestip/geo`];
 					return patterns.some(pattern => requestedPath.startsWith(pattern));
 				});
 
@@ -108,7 +108,7 @@ export default {
 				}
 
 				if (matchingUserID) {
-					if (url.pathname === `/${matchingUserID}` || url.pathname === `/sub/${matchingUserID}`) {
+					if (url.pathname === `/geo` || url.pathname === `/sub/geo`) {
 						const isSubscription = url.pathname.startsWith('/sub/');
 						const proxyAddresses = PROXYIP ? PROXYIP.split(',').map(addr => addr.trim()) : proxyIP;
 						const content = isSubscription ?
@@ -123,7 +123,7 @@ export default {
 									"text/html; charset=utf-8"
 							},
 						});
-					} else if (url.pathname === `/bestip/${matchingUserID}`) {
+					} else if (url.pathname === `/bestip/geo`) {
 						return fetch(`https://sub.xf.free.hr/auto?host=${host}&uuid=${matchingUserID}&path=/`, { headers: request.headers });
 					}
 				}
@@ -1056,9 +1056,9 @@ function getConfig(userIDs, hostName, proxyIP) {
 	const userIDArray = userIDs.split(",");
 
 	// Prepare output string for each userID
-	const sublink = `https://${hostName}/sub/${userIDArray[0]}?format=clash`
-	const subbestip = `https://${hostName}/bestip/${userIDArray[0]}`;
-	const clash_link = `https://url.v1.mk/sub?target=clash&url=${encodeURIComponent(`https://${hostName}/sub/${userIDArray[0]}?format=clash`)}&insert=false&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
+	const sublink = `https://${hostName}/sub/geo?format=clash`
+	const subbestip = `https://${hostName}/bestip/geo`;
+	const clash_link = `https://url.v1.mk/sub?target=clash&url=${encodeURIComponent(`https://${hostName}/sub/geo?format=clash`)}&insert=false&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 	// HTML Head with CSS and FontAwesome library
 	const htmlHead = `
   <head>
