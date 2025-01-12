@@ -21,7 +21,7 @@ pattern = "zoomgov.com.mmek.rizzzi.us.kg"
 custom_domain = true
 
 [vars]
-PROXYIP = "203.194.112.119:2053"
+PROXYIP = "91.192.81.154:2053"
 UUID = "41a13acc-cec5-41c1-83f5-86d6c08f3f4a"
 # SOCKS5 = "127.0.0.1:1080"
 # SOCKS5_RELAY = "true"
