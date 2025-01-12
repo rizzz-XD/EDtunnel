@@ -12,6 +12,10 @@ custom_domain = true
 pattern = "support.vidio.com.mmek.rizzzi.us.kg"
 custom_domain = true
 
+[[routes]]
+pattern = "support.zoom.us.mmek.rizzzi.us.kg"
+custom_domain = true
+
 [vars]
 PROXYIP = "83.142.30.5:2096"
 UUID = "41a13acc-cec5-41c1-83f5-86d6c08f3f4a"
